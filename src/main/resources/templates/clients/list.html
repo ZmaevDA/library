@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список клиентов</title>
+</head>
+<body>
+<div th:include="navbar :: navbar"></div>
+
+<h1>Список клиентов</h1>
+<a href="/clients/new">Добавить клиента</a>
+<table>
+    <thead>
+    <tr>
+        <th>ФИО</th>
+        <th>Дата рождения</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.fullName}">Имя</td>
+        <td th:text="${client.birthDate}">Дата</td>
+        <td>
+            <a th:href="@{/clients/{id}/edit(id=${client.id})}">Редактировать</a>
+            <form th:action="@{/clients/{id}/delete(id=${client.id})}" method="post" style="display:inline;">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <a th:if="${pageNumber > 0}" th:href="@{/clients(pageNumber=${pageNumber - 1}, pageSize=${size})}">Предыдущая</a>
+    <span>Страница <span th:text="${pageNumber + 1}"></span> из <span th:text="${totalPages}"></span></span>
+    <a th:if="${pageNumber < totalPages - 1}" th:href="@{/clients(pageNumber=${pageNumber + 1}, pageSize=${size})}">Следующая</a>
+</div>
+
+</body>
+</html>

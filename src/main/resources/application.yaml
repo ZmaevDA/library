@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  application:
+    name:
+      library
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library-db
+    username: admin
+    password: admin
+    hikari:
+      schema: library
+    driver-class-name: org.postgresql.Driver
+    jpa:
+      hibernate:
+        ddl-auto: validate
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+    flyway:
+      enabled: true
+      schemas: public
+      default-schema: public
+      locations: classpath:db/migration

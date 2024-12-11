@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Order</title>
+</head>
+<body>
+<div th:include="navbar :: navbar"></div>
+
+<h1>Заказать книгу</h1>
+
+<form action="/orders/create" method="post">
+    <div>
+        <label for="bookId">Выбор книги:</label>
+        <select id="bookId" name="bookId" required>
+            <option th:each="book : ${books.content}"
+                    th:value="${book.id}"
+                    th:text="${book.title}">
+            </option>
+        </select>
+        <div>
+            <span th:text="'Страница ' + ${bookPageNumber + 1}"></span>
+            <span> | </span>
+            <span th:text="'из ' + ${books.totalPages}"></span>
+        </div>
+        <div>
+            <a th:if="${bookPageNumber > 0}" th:href="@{/orders/create(bookPageNumber=${bookPageNumber - 1}, clientPageNumber=${clientPageNumber}, pageSize=${pageSize})}">Предыдущая</a>
+            <a th:if="${bookPageNumber < books.totalPages - 1}" th:href="@{/orders/create(bookPageNumber=${bookPageNumber + 1}, clientPageNumber=${clientPageNumber}, pageSize=${pageSize})}">Следующая</a>
+        </div>
+    </div>
+
+    <div>
+        <label for="clientId">Выбор клиента:</label>
+        <select id="clientId" name="clientId" required>
+            <option th:each="client : ${clients.content}"
+                    th:value="${client.id}"
+                    th:text="${client.fullName}">Select a client</option>
+        </select>
+        <div>
+            <span th:text="'Страница ' + ${clientPageNumber + 1}"></span>
+            <span> | </span>
+            <span th:text="'из ' + ${clients.totalPages}"></span>
+        </div>
+        <div>
+            <a th:if="${clientPageNumber > 0}" th:href="@{/orders/create(bookPageNumber=${bookPageNumber}, clientPageNumber=${clientPageNumber - 1}, pageSize=${pageSize})}">Предыдущая</a>
+            <a th:if="${clientPageNumber < clients.totalPages - 1}" th:href="@{/orders/create(bookPageNumber=${bookPageNumber}, clientPageNumber=${clientPageNumber + 1}, pageSize=${pageSize})}">Следующая</a>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit">Сделать заказ книги</button>
+    </div>
+</form>
+</body>
+</html>
